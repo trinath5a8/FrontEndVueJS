@@ -1,0 +1,2 @@
+2020-01-17 14:56:54 INFO  GlobalException:34 - CountriesService-URL:/countries---- handleException(CountriesNotFoundException)  method executed...ResponseBean [message=Not Counties List found for Given isocode., responsecode=404, tiemstamp=1579253214563]
+2020-01-17 15:12:41 INFO  GlobalException:48 - CountriesService -URL:/countries---- handleException(DBInsertException)  method executed...ResponseBean [message=Status update fail for given ISOCODE:ind, responsecode=500, tiemstamp=1579254161166]

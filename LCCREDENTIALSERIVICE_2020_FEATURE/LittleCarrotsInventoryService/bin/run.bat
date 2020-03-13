@@ -1,0 +1,1 @@
+java -jar target\LittleCarrotsInventoryService-MVP-V2.0.0.jar

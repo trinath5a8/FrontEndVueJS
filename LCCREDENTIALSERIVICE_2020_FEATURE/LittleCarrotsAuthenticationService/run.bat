@@ -1,0 +1,1 @@
+java -jar target\LittleCarrotsAuthenticationService-MVP-V2.0.0.jar
