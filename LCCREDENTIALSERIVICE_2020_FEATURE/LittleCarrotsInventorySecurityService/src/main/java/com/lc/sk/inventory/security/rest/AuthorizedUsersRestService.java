@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lc.sk.inventory.security.beans.AuthenticationBean;
 import com.lc.sk.inventory.security.beans.AuthorizedUsers;
 import com.lc.sk.inventory.security.beans.Key;
+import com.lc.sk.inventory.security.beans.MessageGenerator;
 import com.lc.sk.inventory.security.beans.ResponseBean;
 import com.lc.sk.inventory.security.beans.UrlBean;
 import com.lc.sk.inventory.security.dao.HeaderKeyManagement;
@@ -59,6 +60,9 @@ public class AuthorizedUsersRestService {
 
 	@Autowired
 	private ServiceHttpRequestFactory requestFacotry;
+	
+	@Autowired
+	private EmailRestService notification;
 
 	private UrlBean urls;
 	private RestTemplate restTemplate;
@@ -143,6 +147,7 @@ public class AuthorizedUsersRestService {
 
 				response = restTemplate.exchange(urls.getUrl(), urls.getMethod(), request, String.class);
 				if (response.getStatusCode() == HttpStatus.ACCEPTED) {
+				//	notification.sendMail(MessageGenerator.newUser(username, password, email, rolename));
 					responseBean = (ResponseBean) JsonToBeanConverter.convert(response.getBody(), ResponseBean.class);
 				} 
 				else if(response.getStatusCode()==HttpStatus.OK)

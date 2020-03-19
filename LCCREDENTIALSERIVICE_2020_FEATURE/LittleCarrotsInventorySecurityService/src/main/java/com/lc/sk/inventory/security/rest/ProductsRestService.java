@@ -51,7 +51,7 @@ public class ProductsRestService {
 	// Insertion
 	public ResponseBean insert(String descriptionid, String batchid, String genderid, String catid, String subcatid,
 			String seasonid, String occasionid, String ageid, String materialid, String colorid, String custid,
-			String status) {
+			boolean status) {
 		key = headerKeyManagement.getKey(ConstantValues.INVENTORY_API_ACCESS_KEY);
 		urls = serviceUrlsDao.getAccessUrl(UrlDetails.PRODUCTS_POST);
 		ResponseBean responseBean = null;
@@ -72,7 +72,7 @@ public class ProductsRestService {
 				map.add(ConstantValues.MATERIAL_ID, materialid);
 				map.add(ConstantValues.COLOR_ID, colorid);
 				map.add(ConstantValues.CUSTOMER_ID, custid);
-				map.add(ConstantValues.STATUS, status);
+				map.add(ConstantValues.STATUS, status+"");
 				HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
 				response = restTemplate.exchange(urls.getUrl(), urls.getMethod(), request, String.class);
@@ -103,7 +103,7 @@ public class ProductsRestService {
 	// Updation
 	public ResponseBean update(String productid, String descriptionid, String batchid, String genderid, String catid,
 			String subcatid, String seasonid, String occasionid, String ageid, String materialid, String colorid,
-			String custid, String status) {
+			String custid, boolean status) {
 		key = headerKeyManagement.getKey(ConstantValues.INVENTORY_API_ACCESS_KEY);
 		urls = serviceUrlsDao.getAccessUrl(UrlDetails.PRODUCTS_PUT);
 		ResponseBean responseBean = null;
@@ -125,7 +125,7 @@ public class ProductsRestService {
 				map.add(ConstantValues.MATERIAL_ID, materialid);
 				map.add(ConstantValues.COLOR_ID, colorid);
 				map.add(ConstantValues.CUSTOMER_ID, custid);
-				map.add(ConstantValues.STATUS, status);
+				map.add(ConstantValues.STATUS, status+"");
 				HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
 				response = restTemplate.exchange(urls.getUrl(), urls.getMethod(), request, String.class);
@@ -155,7 +155,7 @@ public class ProductsRestService {
 
 	// Put
 	// Enabling Batch Status
-	public ResponseBean enableBatchStatus(String productid, String status) {
+	public ResponseBean enableBatchStatus(String productid, boolean status) {
 		key = headerKeyManagement.getKey(ConstantValues.INVENTORY_API_ACCESS_KEY);
 		urls = serviceUrlsDao.getAccessUrl(UrlDetails.PRODUCTS_PUT);
 		ResponseBean responseBean = null;

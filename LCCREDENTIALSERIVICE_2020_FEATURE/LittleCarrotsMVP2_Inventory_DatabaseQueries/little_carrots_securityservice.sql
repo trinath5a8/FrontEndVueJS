@@ -326,5 +326,5 @@ insert serviceurls(servicename, serviceip, url,timeout,method) values
 #09-MAR-2020 SHAIK ADDED QUERIES
 insert securitykeymanagement(keyname, keyvalue) values('EMAIL_API_ACCESS_KEY', 'Li20Il-t920TS-t1212T-Tls5LO-et319E-Rco120-CRar18-15Ar18');
 
-insert serviceurl(servicename, serviceip, url, timeout, method) values
+insert serviceurls(servicename, serviceip, url, timeout, method) values
 ('EMAIL_POST', 'http://localhost:8281', '/mail/v1/push1', 1000, 'POST');

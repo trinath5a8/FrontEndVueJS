@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lc.sk.auth.bean.MessageGenerator;
 import com.lc.sk.auth.entities.AuthorizedUsers;
 import com.lc.sk.auth.exceptions.subexceptions.AuthorizationNotFountException;
 import com.lc.sk.auth.exceptions.subexceptions.AuthorizedUserNotFoundException;
@@ -30,6 +31,7 @@ import com.lc.sk.auth.exceptions.subexceptions.NullRequestReceivedException;
 import com.lc.sk.auth.rbeans.AuthenticationBean;
 import com.lc.sk.auth.rbeans.ResponseBean;
 import com.lc.sk.auth.repositories.AuthorizedUsersRepository;
+import com.lc.sk.auth.rest.EmailRestService;
 import com.lc.sk.auth.security.SecretSecurity;
 import com.lc.sk.auth.util.ConstantVariables;
 import com.lc.sk.auth.util.EmailValidation;
@@ -50,6 +52,9 @@ public class AuthorizedUserService {
 	@Autowired
 	private AuthorizedUsersRepository authorizedUserRepository;
 
+	@Autowired
+	private EmailRestService emailRestService;
+	
 	@Autowired
 	private HeaderComponent headers;
 
@@ -103,6 +108,9 @@ public class AuthorizedUserService {
 				AuthorizedUsers authorizedUser = authorizedUserRepository.save(
 						new AuthorizedUsers(username, email, SecretSecurity.enc(password), status, rolename, date));
 				if (authorizedUser.getUsername().equals(username)) {
+					if(emailRestService.authEmailStatus()) {
+						emailRestService.sendMail(MessageGenerator.newUser(username, password, email, rolename));
+					}
 					responseBean.setMessage(ConstantVariables.NEW_AUTHORIZED_USER_INSERTED_SUCCESS);
 					responseBean.setTiemstamp(System.currentTimeMillis());
 					responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
@@ -155,7 +163,6 @@ public class AuthorizedUserService {
 						authUser.get().getEmail(), authUser.get().getRolename(), SecurityHttpStatus.ACCEPTED,
 						authUser.get().getLastlogindate().getTime(), authUser.get().getAuthuserstatus()); // REQUIRED TO CODE FOR TOKENID
 				updateLastLoginTime(authUser.get());
-
 				return new ResponseEntity<AuthenticationBean>(authenticationBean, headers.getHeader(), HttpStatus.ACCEPTED);
 			} else {
 				throw new AuthorizedUserNotFoundException(ConstantVariables.INVALID_USERNAME);
@@ -206,6 +213,9 @@ public class AuthorizedUserService {
 				authUser.get().setPassword(SecretSecurity.enc(newpassword));
 				AuthorizedUsers modifiedUser = authorizedUserRepository.save(authUser.get());
 				if (modifiedUser.getUsername().equals(username)) {
+					if(emailRestService.authEmailStatus()) {
+						emailRestService.sendMail(MessageGenerator.passwordUpdate(username, newpassword,authUser.get().getEmail(),authUser.get().getRolename()));
+					}
 					responseBean.setMessage(ConstantVariables.PASSWORD_UPDATE_SUCCESS);
 					responseBean.setResponsecode(SecurityHttpStatus.OK);
 					responseBean.setTiemstamp(System.currentTimeMillis());
@@ -240,7 +250,9 @@ public class AuthorizedUserService {
 			responseBean.setMessage(ConstantVariables.STATUS_CHANGE_SUCESS);
 			responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 			responseBean.setTiemstamp(System.currentTimeMillis());
-
+			if(emailRestService.authEmailStatus()) {
+				emailRestService.sendMail(MessageGenerator.accountStatusActive(username, authUser.get().getEmail(), status));
+			}
 		} else {
 			throw new DBValueInsertException(ConstantVariables.STATUS_NOT_UPDATED_EXCEPTION_MSG);
 		}

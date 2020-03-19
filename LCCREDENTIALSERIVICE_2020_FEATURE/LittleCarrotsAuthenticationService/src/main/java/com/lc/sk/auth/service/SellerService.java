@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lc.sk.auth.bean.MessageGenerator;
 import com.lc.sk.auth.entities.Seller;
 import com.lc.sk.auth.exceptions.subexceptions.DBValueInsertException;
 import com.lc.sk.auth.exceptions.subexceptions.NullRequestReceivedException;
 import com.lc.sk.auth.exceptions.subexceptions.SellerNotFoundException;
 import com.lc.sk.auth.rbeans.ResponseBean;
 import com.lc.sk.auth.repositories.SellerRepository;
+import com.lc.sk.auth.rest.EmailRestService;
 import com.lc.sk.auth.util.ConstantVariables;
 import com.lc.sk.auth.util.HeaderComponent;
 import com.lc.sk.auth.util.SecurityHttpStatus;
@@ -45,6 +47,9 @@ public class SellerService {
 	@Autowired
 	SellerRepository sellerRepository;
 
+	@Autowired
+	EmailRestService emailRestService;
+	
 	@Autowired
 	private HeaderComponent headers;
 
@@ -76,6 +81,9 @@ public class SellerService {
 			Seller seller = new Seller(sellername, sellercompanyname, phonenumber, address, email, isocode, status);
 			seller = sellerRepository.save(seller);
 			if (seller.getSellercompanyname().equals(sellercompanyname)) {
+				if(emailRestService.authEmailStatus()) {
+					emailRestService.sendMail(MessageGenerator.newSeller(sellercompanyname, sellername, phonenumber+"", email, address, isocode));
+				}
 				responseBean.setMessage(ConstantVariables.NEW_SELLER_INSERTED_SUCCESS);
 				responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 				responseBean.setTiemstamp(System.currentTimeMillis());
@@ -137,6 +145,9 @@ public class SellerService {
 System.err.println("Calling save function...137...");
 			Seller seller = sellerRepository.save(sellers.get());
 			if (seller.getSellercompanyname().equals(sellercompanyname)) {
+				if(emailRestService.authEmailStatus()) {
+					emailRestService.sendMail(MessageGenerator.updateSeller(sellercompanyname, sellername, phonenumber+"", email, address, isocode));
+				}
 				responseBean.setMessage(ConstantVariables.SELLER_UPDATE_SUCCESS);
 				responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 				responseBean.setTiemstamp(System.currentTimeMillis());

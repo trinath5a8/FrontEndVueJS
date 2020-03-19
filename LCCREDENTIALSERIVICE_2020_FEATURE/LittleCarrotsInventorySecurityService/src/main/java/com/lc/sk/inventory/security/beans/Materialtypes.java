@@ -2,7 +2,8 @@ package com.lc.sk.inventory.security.beans;
 
 import java.io.Serializable;
 
-public class Materialtypes implements Serializable {
+public class Materialtypes // implements Serializable 
+{
 
 	private long materialid;
 	private String materialname;

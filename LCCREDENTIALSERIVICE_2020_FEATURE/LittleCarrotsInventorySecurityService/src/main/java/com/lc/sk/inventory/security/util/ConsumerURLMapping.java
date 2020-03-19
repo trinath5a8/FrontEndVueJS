@@ -47,7 +47,8 @@ public interface ConsumerURLMapping {
 	
 	static final String MATERIAL_GET_PATH = "/mat";
 	static final String MATERIALTYPE_GET_PATH_WITH_VARIABLE = "/mat/{materialid}";
-
+	static final String MATERIAL_GET_PATH1 = "/mat/{sss}/{sss1}";
+	
 	static final String NO_OF_PIECES_PATH = "/nop";
 	static final String NO_OF_PIECES_PATH_WITH_ID = "/nop/{pieceid}";
 

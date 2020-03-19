@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lc.sk.auth.bean.MessageGenerator;
 import com.lc.sk.auth.entities.Authorization;
 import com.lc.sk.auth.exceptions.subexceptions.AuthorizationNotFountException;
 import com.lc.sk.auth.exceptions.subexceptions.DBValueInsertException;
@@ -44,7 +45,8 @@ public class AuthorizationService {
 	// REPOSITORIES DECLARATION
 	@Autowired
 	private AuthorizationRepository authorizationrepository;
-
+	
+	
 	@Autowired
 	private HeaderComponent headers;
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lc.sk.auth.bean.MessageGenerator;
 import com.lc.sk.auth.entities.SellerUsers;
 import com.lc.sk.auth.exceptions.subexceptions.AuthorizedUserNotFoundException;
 import com.lc.sk.auth.exceptions.subexceptions.DBValueInsertException;
@@ -29,6 +30,7 @@ import com.lc.sk.auth.exceptions.subexceptions.SellerUserNotFoundException;
 import com.lc.sk.auth.rbeans.AuthenticationBean;
 import com.lc.sk.auth.rbeans.ResponseBean;
 import com.lc.sk.auth.repositories.SellerUserRepository;
+import com.lc.sk.auth.rest.EmailRestService;
 import com.lc.sk.auth.security.SecretSecurity;
 import com.lc.sk.auth.util.ConstantVariables;
 import com.lc.sk.auth.util.HeaderComponent;
@@ -48,6 +50,9 @@ public class SellerUserService {
 
 	@Autowired
 	SellerUserRepository sellerUserRepository;
+	
+	@Autowired
+	EmailRestService emailRestService;
 
 	@Autowired
 	private HeaderComponent headers;
@@ -82,6 +87,9 @@ public class SellerUserService {
 					email, sellerid, fullname, status, rolename, date));
 
 			if (salesUser.getUsername().equals(username)) {
+				if(emailRestService.authEmailStatus()) {
+					emailRestService.sendMail(MessageGenerator.newSalesuser(username, password, email, fullname, rolename, sellerid+" "));
+				}
 				responseBean.setMessage(ConstantVariables.NEW_SELLER_INSERTED_SUCCESS);
 				responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 				responseBean.setTiemstamp(System.currentTimeMillis());
@@ -133,6 +141,9 @@ public class SellerUserService {
 				sellerUsers.get().setPassword(SecretSecurity.enc(newpassword));
 				SellerUsers postUserDetails = sellerUserRepository.save(sellerUsers.get());
 				if (postUserDetails.getUsername().equals(username)) {
+					if(emailRestService.authEmailStatus()) {
+						emailRestService.sendMail(MessageGenerator.passwordUpdate(username, newpassword, sellerUsers.get().getEmail(), sellerUsers.get().getRolename()));
+					}
 					responseBean.setMessage(ConstantVariables.PASSWORD_UPDATE_SUCCESS);
 					responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 					responseBean.setTiemstamp(System.currentTimeMillis());
@@ -194,6 +205,9 @@ public class SellerUserService {
 			user.get().setStatus(status);
 			SellerUsers sellUsers = sellerUserRepository.save(user.get());
 			if (sellUsers.getStatus() == status) {
+				if(emailRestService.authEmailStatus()) {
+					emailRestService.sendMail(MessageGenerator.accountStatusActive(username, sellUsers.getEmail(), status));
+				}
 				responseBean.setMessage(ConstantVariables.SELLER_STATUS_UPDATE_SUCCESS);
 				responseBean.setResponsecode(SecurityHttpStatus.ACCEPTED);
 				responseBean.setTiemstamp(System.currentTimeMillis());

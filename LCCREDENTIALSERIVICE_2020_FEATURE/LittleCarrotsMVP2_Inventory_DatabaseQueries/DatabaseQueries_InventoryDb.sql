@@ -411,6 +411,7 @@ constraint productquantities_fk1 foreign key (sizeid) references sizes (sizeid))
 
 ALTER TABLE productquantities AUTO_INCREMENT = 101;
 
+
 #-----sreerekha----#
 create table materialtype(
 materialid bigint auto_increment,

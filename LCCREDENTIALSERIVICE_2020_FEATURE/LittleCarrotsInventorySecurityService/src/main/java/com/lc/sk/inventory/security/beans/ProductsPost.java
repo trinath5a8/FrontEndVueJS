@@ -26,7 +26,7 @@ public class ProductsPost implements Serializable{
 
 	private long custid;
 
-	private String status;
+	private boolean status;
 
 	public ProductsPost() {
 		super();
@@ -34,7 +34,7 @@ public class ProductsPost implements Serializable{
 	}
 
 	public ProductsPost(long descriptionid, long batchid, String genderid, long catid, long subcatid, long seasonid,
-			long occasionid, String ageid, long materialid, long colorid, long custid, String status) {
+			long occasionid, String ageid, long materialid, long colorid, long custid, boolean status) {
 		super();
 		this.descriptionid = descriptionid;
 		this.batchid = batchid;
@@ -138,11 +138,11 @@ public class ProductsPost implements Serializable{
 		this.custid = custid;
 	}
 
-	public String getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 

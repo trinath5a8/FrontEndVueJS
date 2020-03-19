@@ -1,6 +1,7 @@
 package com.lc.sk.inventory.security.service;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +29,7 @@ import com.lc.sk.inventory.security.beans.Countries;
 import com.lc.sk.inventory.security.beans.Genders;
 import com.lc.sk.inventory.security.beans.Materialcomposition;
 import com.lc.sk.inventory.security.beans.Materialtypes;
+import com.lc.sk.inventory.security.beans.Materialtypessubcat;
 import com.lc.sk.inventory.security.beans.NewBatch;
 import com.lc.sk.inventory.security.beans.NewCategory;
 import com.lc.sk.inventory.security.beans.NewColor;
@@ -583,6 +585,65 @@ public class ConsumerEndPoint {
 				return new ResponseEntity<List<Materialtypes>>(materialtypes, headers.getHeader(), HttpStatus.ACCEPTED);
 			}
 
+			@GetMapping(ConsumerURLMapping.MATERIAL_GET_PATH1)
+			@ResponseBody
+			public ResponseEntity<List<Materialtypessubcat>> getAllMaterialtypessubcat(@PathVariable String sss,@PathVariable String sss1)
+			{
+				
+				long temp_ocid , season_id , cat_id , season_sub_cat = 0 , occassion_sub_cat=0;
+				List<Materialtypes> materialtypes = materialtypesRestService.getAllMaterialtypes();
+				List<OccasionalWear> occasionalwear = occasionalwearRestService.getAllOccasionalWearDetails();
+				List<SeasonWear> seasonwears = seasonwearRestService.getAllSeasonWearDetails();
+				List<SubCategories> subcategories = subcategoriesRestService.getAllSubCategoriesDetails();
+				List<Categories> categories = categoriesRestService.getAllCategories();
+				
+				List<Materialtypessubcat> obj = new CopyOnWriteArrayList<>();
+				
+				if(!materialtypes.isEmpty()) {
+					for (Materialtypes me : materialtypes) 
+					{	
+						Materialtypessubcat ob = new Materialtypessubcat();
+						ob.setMETERIAL_NAME(me.getMaterialname());
+						ob.setMETERIALID(me.getMaterialid());
+						ob.setDESCRIPTION(me.getDescription());
+						season_id = me.getSeasonid();
+						temp_ocid = me.getOcid();
+						cat_id = me.getCatid();
+						for(SeasonWear sw: seasonwears)
+						{
+							if(sw.getSeasonId() == season_id)
+							{
+								season_sub_cat = sw.getSubcatId();
+								ob.setSEASON(sw.getSeason());
+							}
+						}
+						for(OccasionalWear ow: occasionalwear) {
+							if(ow.getOccasionid() ==temp_ocid) {
+								occassion_sub_cat = ow.getSubcatid();
+								ob.setOCCASSION(ow.getOccaname());
+							}
+						}
+						for(Categories cats: categories) {
+							if(cats.getCatid() == cat_id) {
+								ob.setCATEGORY(cats.getCategory());
+							}
+						}
+						for(SubCategories sc: subcategories) {
+							if(sc.getCatid() == season_sub_cat ) {
+								ob.setSEASON_SUBCATEGORY(sc.getCategoryname());
+							}
+							if(sc.getCatid() == occassion_sub_cat) {
+								ob.setOCCASSION_SUBCATEGORY(sc.getCategoryname());
+							}
+						}
+						obj.add(ob);
+					}
+				}
+				
+				
+				return new ResponseEntity<List<Materialtypessubcat>>(obj, headers.getHeader(), HttpStatus.ACCEPTED);
+				
+			}
 
 			@GetMapping(ConsumerURLMapping.MATERIALTYPE_GET_PATH_WITH_VARIABLE)
 			@ResponseBody
@@ -897,7 +958,7 @@ public class ConsumerEndPoint {
 			 	 
 				@PutMapping( ConsumerURLMapping.PRODUCTS_MAPPING_PATH_WITH_PATH_VARIABLE_1)
 				@ResponseBody
-				public ResponseEntity<ResponseBean> enableBatchStatus(@PathVariable String productid,@PathVariable String status)
+				public ResponseEntity<ResponseBean> enableBatchStatus(@PathVariable String productid,@PathVariable boolean status)
 				{
 					ResponseBean response = productsRestService.enableBatchStatus(productid, status);
 					
@@ -1103,4 +1164,10 @@ public class ConsumerEndPoint {
 					return new ResponseEntity<ResponseBean>(responseBean, headers.getHeader(), HttpStatus.ACCEPTED);
 				}
 				/* SubCategoriesService code end*/
+				
+				
+				//PRODUCT MANAGEMENT CODE START
+				
+				
+				//PRODUCT MANAGEMENT CODE END
 }

@@ -19,7 +19,9 @@ import com.lc.sk.auth.exceptions.subexceptions.DBPasswordUpdateException;
 import com.lc.sk.auth.exceptions.subexceptions.DBValueInsertException;
 import com.lc.sk.auth.exceptions.subexceptions.EncDecException;
 import com.lc.sk.auth.exceptions.subexceptions.InvalidEmailFomatException;
+import com.lc.sk.auth.exceptions.subexceptions.MailServiceException;
 import com.lc.sk.auth.exceptions.subexceptions.NullRequestReceivedException;
+import com.lc.sk.auth.exceptions.subexceptions.RestURLReaderException;
 import com.lc.sk.auth.exceptions.subexceptions.SellerNotFoundException;
 import com.lc.sk.auth.exceptions.subexceptions.SellerUserNotFoundException;
 import com.lc.sk.auth.rbeans.ResponseBean;
@@ -93,6 +95,16 @@ public class GlobalException {
 //	public ResponseEntity<ResponseBean> handleException(ValueNotFoundException e) {
 //		return loggerMessage("URL:/salesuser---- handleException(ValueNotFoundException)-",e.getMessage(), SecurityHttpStatus.NOT_FOUND);
 //	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseBean> handleException(RestURLReaderException e) {
+		return loggerMessage("URL:/mailservice---- handleException(RestURLReaderException)-",e.getMessage(), SecurityHttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseBean> handleException(MailServiceException e) {
+		return loggerMessage("URL:/mailservice---- handleException(MailServiceException)-",e.getMessage(), SecurityHttpStatus.NOT_FOUND);
+	}
 	
 	public ResponseEntity<ResponseBean> loggerMessage(String url, String message, int status)
 	{

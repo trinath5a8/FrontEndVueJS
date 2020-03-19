@@ -30,4 +30,5 @@ public interface URLMapping {
 	final static String SELLER_USER_UPDATE_STATUS_MAPPING_PATH="/salesusers/{username}/{status}";
 	
 	final static String ROOT_PATH_FOR_VALIDATION = "/**";
+	final static String LC_PATH = "/lc";
 }

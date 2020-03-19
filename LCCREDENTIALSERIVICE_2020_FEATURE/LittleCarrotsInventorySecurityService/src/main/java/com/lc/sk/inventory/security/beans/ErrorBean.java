@@ -3,7 +3,6 @@
  */
 package com.lc.sk.inventory.security.beans;
 
-import org.springframework.http.HttpMethod;
 
 /**
  * @author Mastanvali Shaik LittleCarrotsInventorySecurityService 2020

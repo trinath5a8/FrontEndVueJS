@@ -14,4 +14,5 @@ public interface SecurityHttpStatus {
 	final static int UNAUTHORIZED = 4005;
 	final static int REQUEST_TIMEOUT = 4006;
 	final static int BAD_REQUEST = 4007;
+	
 }

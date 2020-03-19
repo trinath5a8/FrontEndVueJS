@@ -75,3 +75,27 @@ insert securitykeymanagement(keyname, keyvalue) values('CLIENT_API_ACCESS_KEY', 
 
 #09-MAR-2020 SHAIK ADDED QUERIES
 insert securitykeymanagement(keyname, keyvalue) values('EMAIL_API_ACCESS_KEY', 'Li20Il-t920TS-t1212T-Tls5LO-et319E-Rco120-CRar18-15Ar18');
+
+
+create table serviceurls
+(
+servicename varchar(30) unique,
+url varchar(1000),
+timeout bigint,
+method varchar(20),
+constraint serviceurls_pk2 primary key (servicename)
+
+);
+alter table serviceurls add column serviceip varchar(1000);
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('EMAIL_POST', 'http://localhost:8281', '/mail/v1/push1', 1000, 'POST');
+
+
+create table lc_props(
+propid bigint auto_increment,
+prop varchar(100) unique,
+status boolean,
+constraint lcprop_pk primary key (propid)
+);
+
+insert into lc_props(prop, statu) values('EMAIL_SERVICE', TRUE);

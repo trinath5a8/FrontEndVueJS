@@ -80,4 +80,9 @@ public interface ConstantVariables {
 	final static long HEADER_KEY_DB_ID_1 = 1000;
 	static final String STATUS_NOT_UPDATED = " No user role found";
 	static final String USER_NAME_NOT_FOUND = "User name not found";
+	
+	final static String EMAIL_API_ACCESS_KEY = "EMAIL_API_ACCESS_KEY";
+	final static String ERROR_BEAN_RETURNED = "Returned Error Bean";
+	final  static String MAIL_NOT_SENT = "Mail Server has issue and mail not sent to destination";
+	final static String MAIL_SEND_STATUS = "EMAIL_SERVICE";
 }
