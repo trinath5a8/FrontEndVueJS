@@ -48,6 +48,7 @@ public interface ConsumerURLMapping {
 	static final String MATERIAL_GET_PATH = "/mat";
 	static final String MATERIALTYPE_GET_PATH_WITH_VARIABLE = "/mat/{materialid}";
 	static final String MATERIAL_GET_PATH1 = "/mat/{sss}/{sss1}";
+	static final String METERIAL_GET_PATH3 = "/mat1";
 	
 	static final String NO_OF_PIECES_PATH = "/nop";
 	static final String NO_OF_PIECES_PATH_WITH_ID = "/nop/{pieceid}";
@@ -93,9 +94,12 @@ public interface ConsumerURLMapping {
 	static final String SUBCATEGORIES_MAPPING_PATH_WITH_VARIABLE = "/sc/{subcatid}";
 
 
+	static final String PRODUCTDESCRIPTION_MAPPING_PATH1 = "/pd/{sss}/{sss1}";
+	static final String PRODUCTQUANTITIES_MAPPING_PATH1 = "/pq/{sss}/{sss1}";
 
 	
-
+	final static String PRODUCT_IMG_LIST ="/imgl";
+	final static String NO_IMG_PROD = "/noimg";
 	
 	
 	

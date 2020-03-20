@@ -191,4 +191,8 @@ public interface ConstantValues extends Serializable {
 
 	static final String NO_BATCH_SERVICE_FOUND = "no batch id found";
 	static final Object PRODUCT_NOT_FOUND = "product details not found";
+	
+	
+	final static String IMAGE_PARAM="img";
+	final static String IMAGE_PRODUCTID = "productid";
 }

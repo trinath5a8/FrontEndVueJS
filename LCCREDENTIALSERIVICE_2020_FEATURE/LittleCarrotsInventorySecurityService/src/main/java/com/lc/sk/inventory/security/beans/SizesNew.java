@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class SizesNew implements Serializable{
 	
 	private String ageid;
+	
+	private String gender;
 
 	private String sizeno;
 
@@ -23,9 +25,11 @@ public class SizesNew implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public SizesNew(String ageid, String sizeno, String height, String weight, String chest, String waist, String hip) {
+	public SizesNew(String ageid, String gender, String sizeno, String height, String weight, String chest,
+			String waist, String hip) {
 		super();
 		this.ageid = ageid;
+		this.gender = gender;
 		this.sizeno = sizeno;
 		this.height = height;
 		this.weight = weight;
@@ -40,6 +44,14 @@ public class SizesNew implements Serializable{
 
 	public void setAgeid(String ageid) {
 		this.ageid = ageid;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getSizeno() {
@@ -92,9 +104,11 @@ public class SizesNew implements Serializable{
 
 	@Override
 	public String toString() {
-		return "SizesNew [ageid, sizeno, height, weight, chest, waist, hip]";
+		return "SizesNew [ageid=" + ageid + ", gender=" + gender + ", sizeno=" + sizeno + ", height=" + height
+				+ ", weight=" + weight + ", chest=" + chest + ", waist=" + waist + ", hip=" + hip + "]";
 	}
-	 
+
+    
 	
 
 }

@@ -338,8 +338,10 @@ weight varchar(50),
 chest varchar(50),
 waist varchar(50),
 hip varchar(50),
+gender varchar(10),
 constraint sizes_pk primary key (sizeid),
-constraint sizes_fk foreign key (ageid) references productage(ageid));
+constraint sizes_fk1 foreign key (ageid) references productage(ageid),
+constraint sizes_fk2 foreign key (gender) references genders (genderid));
 
 ALTER TABLE sizes AUTO_INCREMENT = 101;
 
@@ -430,7 +432,7 @@ ALTER TABLE materialtype AUTO_INCREMENT = 101;
 #--------Sreerekha-------#
 create table products(
 productid bigint auto_increment,
-descriptionid bigint,
+descriptionid bigint unique,
 BatchID bigint,
 genderid varchar(10),
 catid bigint,
@@ -440,7 +442,7 @@ occasionid int,
 ageid varchar(50),
 materialid bigint,
 colorid bigint,
-custid bigint,
+custid bigint unique,
 status boolean,
 constraint products_pk primary key (productid),
 constraint products_fk1 foreign key (descriptionid) references productdescriptions (descriptionid),
@@ -467,7 +469,7 @@ constraint materialcomposition_fk foreign key (materialid) references materialty
 create table pricestable(
 priceid bigint auto_increment,
 mrp double,
-productid bigint,
+productid bigint unique,
 lcprice double,
 tax double,
 sellingprice double,

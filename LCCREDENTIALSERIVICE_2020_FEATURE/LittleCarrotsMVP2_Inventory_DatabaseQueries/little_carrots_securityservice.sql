@@ -328,3 +328,23 @@ insert securitykeymanagement(keyname, keyvalue) values('EMAIL_API_ACCESS_KEY', '
 
 insert serviceurls(servicename, serviceip, url, timeout, method) values
 ('EMAIL_POST', 'http://localhost:8281', '/mail/v1/push1', 1000, 'POST');
+
+
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('IMAGE_POST', 'http://localhost:8686', '/img/v1/upload', 1000, 'POST');
+
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('IMAGE_GET', 'http://localhost:8686', '/img/v1/getallimg', 1000, 'GET');
+
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('IMAGE_GET1', 'http://localhost:8686', '/img/v1/getbyid', 1000, 'GET');
+
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('IMAGE_GET2', 'http://localhost:8686', '/img/v1/getallimg1', 1000, 'GET');
+
+insert serviceurls(servicename, serviceip, url, timeout, method) values
+('IMAGE_GET3', 'http://localhost:8686', '/img/v1/getimgs', 1000, 'GET');
+
+
+
+

@@ -89,4 +89,10 @@ public interface UrlDetails extends Serializable {
 	static final String PRODUCTS_GET = "PRODUCTS_GET";
 	
 	static final String EMAIL_POST = "EMAIL_POST";
+	
+	final static String IMAGE_POST = "IMAGE_POST";
+	final static String IMAGE_GET = "IMAGE_GET";
+	final static String IMAGE_GET1 = "IMAGE_GET1";
+	final static String IMAGE_GET2 = "IMAGE_GET2";
+	final static String IMAGE_GET3 = "IMAGE_GET3";
 }

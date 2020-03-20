@@ -7,6 +7,8 @@ public class Sizes implements Serializable {
 	private long sizeid;
 
 	private String ageid;
+	
+	private String gender;
 
 	private String sizeno;
 
@@ -25,11 +27,12 @@ public class Sizes implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Sizes(long sizeid, String ageid, String sizeno, String height, String weight, String chest, String waist,
-			String hip) {
+	public Sizes(long sizeid, String ageid, String gender, String sizeno, String height, String weight, String chest,
+			String waist, String hip) {
 		super();
 		this.sizeid = sizeid;
 		this.ageid = ageid;
+		this.gender = gender;
 		this.sizeno = sizeno;
 		this.height = height;
 		this.weight = weight;
@@ -52,6 +55,14 @@ public class Sizes implements Serializable {
 
 	public void setAgeid(String ageid) {
 		this.ageid = ageid;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getSizeno() {
@@ -104,8 +115,11 @@ public class Sizes implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Sizes [sizeid=" + sizeid + ", ageid=" + ageid + ", sizeno=" + sizeno + ", height=" + height
-				+ ", weight=" + weight + ", chest=" + chest + ", waist=" + waist + ", hip=" + hip + "]";
+		return "Sizes [sizeid=" + sizeid + ", ageid=" + ageid + ", gender=" + gender + ", sizeno=" + sizeno
+				+ ", height=" + height + ", weight=" + weight + ", chest=" + chest + ", waist=" + waist + ", hip=" + hip
+				+ "]";
 	}
+
+	
 
 }

@@ -26,6 +26,7 @@ import com.lc.sk.inventory.security.beans.Batch;
 import com.lc.sk.inventory.security.beans.Categories;
 import com.lc.sk.inventory.security.beans.Color;
 import com.lc.sk.inventory.security.beans.Countries;
+//import com.lc.sk.inventory.security.beans.DistinctProductDesId;
 import com.lc.sk.inventory.security.beans.Genders;
 import com.lc.sk.inventory.security.beans.Materialcomposition;
 import com.lc.sk.inventory.security.beans.Materialtypes;
@@ -75,6 +76,7 @@ import com.lc.sk.inventory.security.rest.CategoriesRestService;
 import com.lc.sk.inventory.security.rest.ColorRestService;
 import com.lc.sk.inventory.security.rest.CountriesRestService;
 import com.lc.sk.inventory.security.rest.GendersRestService;
+import com.lc.sk.inventory.security.rest.ImagesResetService;
 import com.lc.sk.inventory.security.rest.MaterialcompositionRestService;
 import com.lc.sk.inventory.security.rest.MaterialtypesRestService;
 import com.lc.sk.inventory.security.rest.NoOfPiecesRestService;
@@ -157,6 +159,9 @@ public class ConsumerEndPoint {
 	private AuthorizationRestService authorizationRestService;
 	@Autowired
 	private SellerRestService sellerRestService;
+	
+	@Autowired
+	private ImagesResetService imageResetService;
 	
 	
 	/* authorization role code start */
@@ -629,10 +634,10 @@ public class ConsumerEndPoint {
 							}
 						}
 						for(SubCategories sc: subcategories) {
-							if(sc.getCatid() == season_sub_cat ) {
+							if(sc.getSubcatid() == season_sub_cat ) {
 								ob.setSEASON_SUBCATEGORY(sc.getCategoryname());
 							}
-							if(sc.getCatid() == occassion_sub_cat) {
+							if(sc.getSubcatid() == occassion_sub_cat) {
 								ob.setOCCASSION_SUBCATEGORY(sc.getCategoryname());
 							}
 						}
@@ -651,6 +656,27 @@ public class ConsumerEndPoint {
 			{
 				Materialtypes materialtypes = materialtypesRestService.getMaterialtypeById(materialid);
 				return new ResponseEntity<Materialtypes>(materialtypes, headers.getHeader(), HttpStatus.ACCEPTED);
+			}
+			
+			@PostMapping(ConsumerURLMapping.METERIAL_GET_PATH3)
+			@ResponseBody
+			public ResponseEntity<List<Materialtypes>> getDetailedMaterialType(@RequestBody ProductsPost pp){
+				List<Materialtypes> materials = new CopyOnWriteArrayList<>();
+				
+				List<Materialtypes> materialtypes = materialtypesRestService.getAllMaterialtypes();
+//				List<OccasionalWear> occasionalwear = occasionalwearRestService.getAllOccasionalWearDetails();
+//				List<SeasonWear> seasonwears = seasonwearRestService.getAllSeasonWearDetails();
+//				List<SubCategories> subcategories = subcategoriesRestService.getAllSubCategoriesDetails();
+//				List<Categories> categories = categoriesRestService.getAllCategories();
+				if(!materialtypes.isEmpty()&& pp.getCatid()!=0&&pp.getOccasionid()!=0&&pp.getSeasonid()!=0) {
+				for(Materialtypes mt: materialtypes) {
+					if(mt.getCatid()== pp.getCatid() && mt.getOcid() == pp.getOccasionid() && mt.getSeasonid()==pp.getSeasonid()) {
+						materials.add(mt);
+					}
+				}
+				}
+				
+				return new ResponseEntity<List<Materialtypes>>(materials, headers.getHeader(), HttpStatus.ACCEPTED);
 			}
 			/* MaterialtypesService code end*/
 			
@@ -796,6 +822,7 @@ public class ConsumerEndPoint {
 				return new ResponseEntity<List<PricesTable>>(prices, headers.getHeader(), HttpStatus.ACCEPTED);
 			}
 			
+			
 			@PutMapping(path = ConsumerURLMapping.PRICES_TABLE_PATH)
 			@ResponseBody	
 			public ResponseEntity<ResponseBean> updatePrices(@RequestBody PricesTable PT)
@@ -872,6 +899,35 @@ public class ConsumerEndPoint {
 			
 				return new ResponseEntity<List<ProductDescriptions>>(productDescriptions, headers.getHeader(), HttpStatus.ACCEPTED);
 			}
+		 	
+		 	@GetMapping(ConsumerURLMapping.PRODUCTDESCRIPTION_MAPPING_PATH1)
+		 	@ResponseBody
+			public ResponseEntity<List<ProductDescriptions>> getDistinctProductDescription(@PathVariable String sss,@PathVariable String sss1)
+			{
+				
+			
+				List<ProductDescriptions> pd = productDescriptionsRestService.getAllProductDescriptions();
+				List<Products> products = productsRestService.getall();
+				
+			
+				
+				if(!pd.isEmpty()) {
+					for(Products p: products) {
+					for (int i=0;i<pd.size();i++) 
+					{	
+						
+						
+							if(p.getDescriptionid() == pd.get(i).getDescriptionid() ) {
+								pd.remove(i);
+							}
+						}
+						
+					}
+				}
+				
+				
+				return new ResponseEntity<List<ProductDescriptions>>(pd, headers.getHeader(), HttpStatus.ACCEPTED);
+			}
 			
 		 	 @PutMapping(path = ConsumerURLMapping.PRODUCTDESCRIPTION_MAPPING_PATH)
 			 @ResponseBody
@@ -907,6 +963,35 @@ public class ConsumerEndPoint {
 					ProductQuantities productquantities = productquantitiesRestService.getProductQuantitiesById(custid);
 					
 					return new ResponseEntity<ProductQuantities>(productquantities, headers.getHeader(), HttpStatus.ACCEPTED);
+				}
+				
+				@GetMapping(ConsumerURLMapping.PRODUCTQUANTITIES_MAPPING_PATH1)
+			 	@ResponseBody
+				public ResponseEntity<List<ProductQuantities>> getAllProductquantities(@PathVariable String sss,@PathVariable String sss1)
+				{
+					
+				
+					List<ProductQuantities> pq = productquantitiesRestService.getAllProductQuantities();
+					List<Products> products = productsRestService.getall();
+					
+				
+					
+					if(!pq.isEmpty()) {
+						for(Products p: products) {
+						for (int i=0;i<pq.size();i++) 
+						{	
+							
+							
+								if(p.getCustid() == pq.get(i).getCustid() ) {
+									pq.remove(i);
+								}
+							}
+							
+						}
+					}
+					
+					
+					return new ResponseEntity<List<ProductQuantities>>(pq, headers.getHeader(), HttpStatus.ACCEPTED);
 				}
 			 	 
 				@PutMapping(ConsumerURLMapping.PRODUCTQUANTITIES_GET_PATH)
@@ -1094,7 +1179,7 @@ public class ConsumerEndPoint {
 				@ResponseBody	
 				public ResponseEntity<ResponseBean> insertSeasonWear(@RequestBody SizesNew SNB)
 				{
-					ResponseBean responseBean = sizesRestService.insertSeasonWear(SNB.getAgeid()+"",SNB.getSizeno()+"",SNB.getHeight()+"",SNB.getWeight()+"",SNB.getChest()+"",SNB.getWaist()+"",SNB.getHip());
+					ResponseBean responseBean = sizesRestService.insertSeasonWear(SNB.getAgeid()+"",SNB.getGender()+"",SNB.getSizeno()+"",SNB.getHeight()+"",SNB.getWeight()+"",SNB.getChest()+"",SNB.getWaist()+"",SNB.getHip());
 					return new ResponseEntity<ResponseBean>(responseBean, headers.getHeader(), HttpStatus.ACCEPTED);	
 				}
 				@GetMapping(ConsumerURLMapping.SIZES_MAPPING_PATH_WITH_ID)
@@ -1120,7 +1205,7 @@ public class ConsumerEndPoint {
 				@ResponseBody	
 				public ResponseEntity<ResponseBean> updatesize(@RequestBody Sizes SB)
 				{
-					ResponseBean responseBean = sizesRestService.updatesize(SB.getSizeid()+"",SB.getAgeid()+"",SB.getSizeno()+"",SB.getHeight()+"",SB.getWeight()+"",SB.getChest()+"",SB.getWaist()+"",SB.getHip());
+					ResponseBean responseBean = sizesRestService.updatesize(SB.getSizeid()+"",SB.getAgeid()+"",SB.getGender()+"",SB.getSizeno()+"",SB.getHeight()+"",SB.getWeight()+"",SB.getChest()+"",SB.getWaist()+"",SB.getHip());
 					
 					return new ResponseEntity<ResponseBean>(responseBean, headers.getHeader(), HttpStatus.ACCEPTED);	
 				}
@@ -1167,7 +1252,27 @@ public class ConsumerEndPoint {
 				
 				
 				//PRODUCT MANAGEMENT CODE START
+				@GetMapping(ConsumerURLMapping.PRODUCT_IMG_LIST)
+				@ResponseBody
+				public ResponseEntity<List<Long>> getAllImageProductIds(){
+					return new ResponseEntity<List<Long>>(imageResetService.getAllProductIdsFromImgService(), headers.getHeader(), HttpStatus.ACCEPTED);
+				}
 				
-				
+				@GetMapping(ConsumerURLMapping.NO_IMG_PROD)
+				@ResponseBody //returning product ids
+				public ResponseEntity<List<Long>> getNoImgProducts(){
+					List<Long> data = new CopyOnWriteArrayList<>() ;
+					List<Long> imgprdid = imageResetService.getAllProductIdsFromImgService();
+					List<Products> products = productsRestService.getall();
+					for(int i=0;i<products.size();i++) {
+						if(imgprdid.contains(products.get(i).getProductid())) {
+							products.remove(i);
+						}
+					}
+					for(Products pp: products) {
+						data.add(pp.getProductid());
+					}
+					return new ResponseEntity<List<Long>>(data, headers.getHeader(), HttpStatus.ACCEPTED); 
+				}
 				//PRODUCT MANAGEMENT CODE END
 }

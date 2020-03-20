@@ -71,6 +71,7 @@ public class SizesService {
 	@ResponseBody
 	public ResponseEntity<ResponseBean> insertsize(
 			@RequestParam(name = ConstantValues.AGE_ID, required = true, defaultValue = ConstantValues.DEFAULT_INT) String ageid,
+			@RequestParam(name = ConstantValues.GENDER, required = true, defaultValue = ConstantValues.DEFAULT_INT) String gender,
 			@RequestParam(name = ConstantValues.SIZE_NO, required = true, defaultValue = ConstantValues.DEFAULT_INT) String sizeno,
 			@RequestParam(name = ConstantValues.HEIGHT, required = true, defaultValue = ConstantValues.DEFAULT_INT) String height,
 			@RequestParam(name = ConstantValues.WEIGHT, required = true, defaultValue = ConstantValues.DEFAULT_INT) String weight,
@@ -80,12 +81,12 @@ public class SizesService {
 		System.err.println("In 44");
 		if (ageid.equals(ConstantValues.DEFAULT_INT) || sizeno.equals(ConstantValues.DEFAULT_INT)
 				|| height.equals(ConstantValues.DEFAULT_INT) || weight.equals(ConstantValues.DEFAULT_INT)
-				|| chest.equals(ConstantValues.DEFAULT_INT) || hip.equals(ConstantValues.DEFAULT_INT)) {
+				|| chest.equals(ConstantValues.DEFAULT_INT) || hip.equals(ConstantValues.DEFAULT_INT) || gender.equals(ConstantValues.DEFAULT_INT)) {
 			System.err.println("In 53");
 			throw new NullRequestReceivedException(ConstantValues.RECEIVED_NULL_VALUES);
 		} else {
 			System.err.println("In 58");
-			Sizes sizes = sizesRepository.save(new Sizes(ageid, sizeno, height, weight, chest, waist, hip));
+			Sizes sizes = sizesRepository.save(new Sizes(ageid,gender, sizeno, height, weight, chest, waist, hip));
 
 			if (sizes.getAgeid() == ageid) {
 				ResponseBean responseBean = new ResponseBean(ConstantValues.DATA_INSERTED_IN_DB,
@@ -105,6 +106,7 @@ public class SizesService {
 	public ResponseEntity<ResponseBean> updatesize(
 			@RequestParam(name = ConstantValues.SIZE_ID, required = true, defaultValue = ConstantValues.DEFAULT_INT) long sizeid,
 			@RequestParam(name = ConstantValues.AGE_ID, required = true, defaultValue = ConstantValues.DEFAULT_INT) String ageid,
+			@RequestParam(name = ConstantValues.GENDER, required = true, defaultValue = ConstantValues.DEFAULT_INT) String gender,
 			@RequestParam(name = ConstantValues.SIZE_NO, required = true, defaultValue = ConstantValues.DEFAULT_INT) String sizeno,
 			@RequestParam(name = ConstantValues.HEIGHT, required = true, defaultValue = ConstantValues.DEFAULT_INT) String height,
 			@RequestParam(name = ConstantValues.WEIGHT, required = true, defaultValue = ConstantValues.DEFAULT_INT) String weight,
@@ -120,6 +122,7 @@ public class SizesService {
 			sizes.get().setChest(chest);
 			sizes.get().setWaist(waist);
 			sizes.get().setHip(hip);
+			sizes.get().setGender(gender);
 			Sizes size = sizesRepository.save(sizes.get());
 
 			if (size.getAgeid() == ageid) {

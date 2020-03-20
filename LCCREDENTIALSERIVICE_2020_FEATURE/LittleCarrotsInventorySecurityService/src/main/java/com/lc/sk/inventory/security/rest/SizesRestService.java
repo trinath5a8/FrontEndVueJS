@@ -49,7 +49,7 @@ public class SizesRestService {
 	ObjectMapper jsondata = new ObjectMapper();
 
 	// Insertion
-	public ResponseBean insertSeasonWear(String ageid, String sizeno, String height, String weight, String chest,
+	public ResponseBean insertSeasonWear(String ageid,String gender, String sizeno, String height, String weight, String chest,
 			String waist, String hip) {
 		key = headerKeyManagement.getKey(ConstantValues.INVENTORY_API_ACCESS_KEY);
 		urls = serviceUrlsDao.getAccessUrl(UrlDetails.SIZES_POST);
@@ -61,6 +61,7 @@ public class SizesRestService {
 
 				MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 				map.add(ConstantValues.AGE_ID, ageid);
+				map.add(ConstantValues.GENDER, gender);
 				map.add(ConstantValues.SIZE_NO, sizeno);
 				map.add(ConstantValues.HEIGHT, height);
 				map.add(ConstantValues.WEIGHT, weight);
@@ -97,7 +98,7 @@ public class SizesRestService {
 	}
 
 	// Updation
-	public ResponseBean updatesize(String sizeid, String ageid, String sizeno, String height, String weight,
+	public ResponseBean updatesize(String sizeid, String ageid,String gender, String sizeno, String height, String weight,
 			String chest, String waist, String hip) {
 		key = headerKeyManagement.getKey(ConstantValues.INVENTORY_API_ACCESS_KEY);
 		urls = serviceUrlsDao.getAccessUrl(UrlDetails.SIZES_PUT);
@@ -110,6 +111,7 @@ public class SizesRestService {
 				MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 				map.add(ConstantValues.SIZE_ID, sizeid);
 				map.add(ConstantValues.AGE_ID, ageid);
+				map.add(ConstantValues.GENDER, gender);
 				map.add(ConstantValues.SIZE_NO, sizeno);
 				map.add(ConstantValues.HEIGHT, height);
 				map.add(ConstantValues.WEIGHT, weight);

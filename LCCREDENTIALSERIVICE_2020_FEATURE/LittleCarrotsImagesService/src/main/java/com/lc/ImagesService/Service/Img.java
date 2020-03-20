@@ -43,7 +43,7 @@ import com.lc.ImagesService.entity.ImagesEntity;
  *
  */
 @RestController
-@RequestMapping(value="/")
+@RequestMapping(value="/img/v1")
 public class Img {
 	
 	@Autowired
